@@ -1,0 +1,59 @@
+{
+  "name": "await-timeout",
+  "version": "0.1.0",
+  "description": "A Promise-based implementation of setTimeout / clearTimeout",
+  "author": {
+    "name": "Vitaliy Potapov",
+    "email": "noginsk@rambler.ru"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vitalets/await-timeout.git"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "code": "npm run lint-all",
+    "lint-all": "eslint src test",
+    "lint-staged": "lint-staged",
+    "build": "webpack",
+    "test": "mocha test.js",
+    "test-dist": "npm run build && LIB_PATH=dist npm t",
+    "test-installed": "npm run install-local && LIB_PATH=.installed/node_modules/await-timeout npm t",
+    "install-local": "npm run make-installed-dir && pushd .installed && install-local .. && popd",
+    "make-installed-dir": "mkdir -p .installed && echo '{\"name\": \"dummy\"}' > .installed/package.json",
+    "prerelease": "run-s code test-dist test-installed",
+    "release": "npm version $VER && npm publish",
+    "postrelease": "git push --follow-tags --no-verify",
+    "release-patch": "VER=patch npm run release",
+    "release-minor": "VER=minor npm run release",
+    "diff": "git diff -- . ':!package-lock.json'",
+    "precommit": "run-s lint-staged test",
+    "prepush": "run-s code test"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.js": "eslint"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "eslint": "^4.9.0",
+    "husky": "^0.14.3",
+    "install-local": "^0.4.0",
+    "lint-staged": "^4.3.0",
+    "mocha": "^4.0.1",
+    "webpack": "^3.8.1"
+  },
+  "keywords": [
+    "timeout",
+    "promise",
+    "promise-api",
+    "promises",
+    "settimeout",
+    "cleartimeout"
+  ],
+  "license": "MIT"
+}
