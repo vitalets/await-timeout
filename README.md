@@ -1,4 +1,7 @@
-# await-timeout
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/1473072/32229482-f90f07d2-be61-11e7-86f1-f9f555182292.png">
+  <h1 align="center">await-timeout</h1>
+</p>
 
 [![Build Status](https://travis-ci.org/vitalets/await-timeout.svg?branch=master)](https://travis-ci.org/vitalets/await-timeout)
 [![npm](https://img.shields.io/npm/v/await-timeout.svg)](https://www.npmjs.com/package/await-timeout)
