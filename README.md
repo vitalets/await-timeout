@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/v/await-timeout.svg)](https://www.npmjs.com/package/await-timeout)
 [![license](https://img.shields.io/npm/l/await-timeout.svg)](https://www.npmjs.com/package/await-timeout)
 
-A [Promise]-based implementation of setTimeout / clearTimeout.
+A [Promise]-based API for setTimeout / clearTimeout.
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -39,7 +39,7 @@ async function foo() {
   }
 }
 ```
-The same example with Promise chain:
+The same example using `.then`:
 ```js
 function foo() {
   const timeout = new Timeout();

@@ -1,7 +1,7 @@
 {
   "name": "await-timeout",
   "version": "0.1.0",
-  "description": "A Promise-based implementation of setTimeout / clearTimeout",
+  "description": "A Promise-based API for setTimeout / clearTimeout",
   "author": {
     "name": "Vitaliy Potapov",
     "email": "noginsk@rambler.ru"
@@ -13,33 +13,37 @@
   "engines": {
     "node": ">=6"
   },
-  "main": "dist/index.js",
+  "main": "index.umd.js",
   "scripts": {
-    "code": "npm run lint-all",
-    "lint-all": "eslint src test",
-    "lint-staged": "lint-staged",
+    "code": "eslint index.js test.js webpack.config.js",
     "build": "webpack",
-    "test": "mocha test.js",
-    "test-dist": "npm run build && LIB_PATH=dist npm t",
+    "test": "mocha test.js -r babel-register",
+    "test-umd": "npm run build && LIB_PATH=. mocha test.js",
     "test-installed": "npm run install-local && LIB_PATH=.installed/node_modules/await-timeout npm t",
     "install-local": "npm run make-installed-dir && pushd .installed && install-local .. && popd",
     "make-installed-dir": "mkdir -p .installed && echo '{\"name\": \"dummy\"}' > .installed/package.json",
-    "prerelease": "run-s code test-dist test-installed",
+    "prerelease": "npm run code && npm run test-dist && npm run test-installed",
     "release": "npm version $VER && npm publish",
     "postrelease": "git push --follow-tags --no-verify",
     "release-patch": "VER=patch npm run release",
     "release-minor": "VER=minor npm run release",
-    "diff": "git diff -- . ':!package-lock.json'",
-    "precommit": "run-s lint-staged test",
-    "prepush": "run-s code test"
+    "precommit": "npm run code && npm test",
+    "prepush": "npm run code && npm test && npm run test-umd"
   },
-  "lint-staged": {
-    "{src,test}/**/*.js": "eslint"
+  "babel": {
+    "plugins": [
+      "add-module-exports",
+      "transform-es2015-modules-commonjs"
+    ]
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
     "eslint": "^4.9.0",
     "husky": "^0.14.3",
     "install-local": "^0.4.0",
