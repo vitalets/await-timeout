@@ -20,6 +20,7 @@
     "test": "mocha test.js -r babel-register",
     "test-umd": "npm run build && LIB_PATH=. mocha test.js",
     "test-installed": "npm run install-local && LIB_PATH=.installed/node_modules/await-timeout npm t",
+    "ci": "npm run code && npm test && npm run test-umd",
     "install-local": "npm run make-installed-dir && pushd .installed && install-local .. && popd",
     "make-installed-dir": "mkdir -p .installed && echo '{\"name\": \"dummy\"}' > .installed/package.json",
     "prerelease": "npm run code && npm run test-dist && npm run test-installed",
