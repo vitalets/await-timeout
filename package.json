@@ -23,7 +23,7 @@
     "ci": "npm run code && npm test && npm run test-umd",
     "install-local": "npm run make-installed-dir && pushd .installed && install-local .. && popd",
     "make-installed-dir": "mkdir -p .installed && echo '{\"name\": \"dummy\"}' > .installed/package.json",
-    "prerelease": "npm run code && npm run test-dist && npm run test-installed",
+    "prerelease": "npm run code && npm test && npm run test-umd",
     "release": "npm version $VER && npm publish",
     "postrelease": "git push --follow-tags --no-verify",
     "release-patch": "VER=patch npm run release",
