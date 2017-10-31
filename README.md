@@ -9,9 +9,9 @@ A [Promise]-based API for setTimeout / clearTimeout.
 * [Installation](#installation)
 * [Usage](#usage)
 * [API](#api)
-  * [new Timeout()](#api)
-  * [.set()](#api)
-  * [.clear()](#api)
+  * [new Timeout](#new-timeout)
+  * [.set](#setms-message--promise)
+  * [.clear](#clear)
 * [Motivation](#motivation)
 * [Related resources](#related-resources)
 * [License](#license)
@@ -66,7 +66,7 @@ const timeout = new Timeout();
 ```
 > Note: having separate variable is useful for clearing timeout in `finally` block 
 
-### timeout.set(ms, [message]) ⇒ `Promise`
+### .set(ms, [message]) ⇒ `Promise`
 Starts new timer like `setTimeout()` and returns promise. The promise will be resolved after `ms`:
 ```js
 timeout.set(1000)
@@ -89,7 +89,7 @@ timeout.set(1000, 'Timeout');
 timeout.set(1000).then(() => {throw new Error('Timeout')});
 ```
 
-### timeout.clear()
+### .clear()
 Clears existing timeout like `clearTimeout()`.
 ```js
 const timeout = new Timeout();
