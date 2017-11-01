@@ -1,13 +1,19 @@
-<p align="center">
+<div align="center">
   <img src="https://user-images.githubusercontent.com/1473072/32229482-f90f07d2-be61-11e7-86f1-f9f555182292.png">
-  <h1 align="center">await-timeout</h1>
-</p>
-
-[![Build Status](https://travis-ci.org/vitalets/await-timeout.svg?branch=master)](https://travis-ci.org/vitalets/await-timeout)
-[![npm](https://img.shields.io/npm/v/await-timeout.svg)](https://www.npmjs.com/package/await-timeout)
-[![license](https://img.shields.io/npm/l/await-timeout.svg)](https://www.npmjs.com/package/await-timeout)
-
-A [Promise]-based API for setTimeout / clearTimeout.
+</div>
+<h1 align="center">await-timeout</h1>
+<h5 align="center">A <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise]</a>-based API for setTimeout / clearTimeout</h5>
+<div align="center">
+  <a href="https://travis-ci.org/vitalets/await-timeout">
+    <img src="https://travis-ci.org/vitalets/await-timeout.svg?branch=master" alt="Build Status" />
+  </a>
+  <a href="https://www.npmjs.com/package/await-timeout">
+    <img src="https://img.shields.io/npm/v/await-timeout.svg" alt="Build Status" alt="Npm version" />
+  </a>
+  <a href="https://www.npmjs.com/package/await-timeout">
+    <img src="https://img.shields.io/npm/l/await-timeout.svg" alt="Build Status" alt="License" />
+  </a>  
+</div>  
 
 * [Installation](#installation)
 * [Usage](#usage)
