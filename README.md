@@ -8,12 +8,12 @@
     <img src="https://travis-ci.org/vitalets/await-timeout.svg?branch=master" alt="Build Status" />
   </a>
   <a href="https://www.npmjs.com/package/await-timeout">
-    <img src="https://img.shields.io/npm/v/await-timeout.svg" alt="Build Status" alt="Npm version" />
+    <img src="https://img.shields.io/npm/v/await-timeout.svg" alt="Npm version" />
   </a>
   <a href="https://www.npmjs.com/package/await-timeout">
-    <img src="https://img.shields.io/npm/l/await-timeout.svg" alt="Build Status" alt="License" />
-  </a>  
-</div>  
+    <img src="https://img.shields.io/npm/l/await-timeout.svg" alt="License" />
+  </a>
+</div>
 
 ## Contents
 * [Installation](#installation)
