@@ -2,7 +2,7 @@
   <img src="https://user-images.githubusercontent.com/1473072/32229482-f90f07d2-be61-11e7-86f1-f9f555182292.png">
 </div>
 <h1 align="center">await-timeout</h1>
-<h5 align="center">A <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise]</a>-based API for setTimeout / clearTimeout</h5>
+<h5 align="center">A <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>-based API for setTimeout / clearTimeout</h5>
 <div align="center">
   <a href="https://travis-ci.org/vitalets/await-timeout">
     <img src="https://travis-ci.org/vitalets/await-timeout.svg?branch=master" alt="Build Status" />
@@ -15,6 +15,7 @@
   </a>  
 </div>  
 
+## Contents
 * [Installation](#installation)
 * [Usage](#usage)
 * [API](#api)
