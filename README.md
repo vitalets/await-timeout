@@ -4,15 +4,9 @@
 <h1 align="center">await-timeout</h1>
 <h5 align="center">A <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>-based API for setTimeout / clearTimeout</h5>
 <div align="center">
-  <a href="https://travis-ci.org/vitalets/await-timeout">
-    <img src="https://travis-ci.org/vitalets/await-timeout.svg?branch=master" alt="Build Status" />
-  </a>
-  <a href="https://www.npmjs.com/package/await-timeout">
-    <img src="https://img.shields.io/npm/v/await-timeout.svg" alt="Npm version" />
-  </a>
-  <a href="https://www.npmjs.com/package/await-timeout">
-    <img src="https://img.shields.io/npm/l/await-timeout.svg" alt="License" />
-  </a>
+  <a href="https://travis-ci.org/vitalets/await-timeout"><img src="https://travis-ci.org/vitalets/await-timeout.svg?branch=master" alt="Build Status" /></a>
+  <a href="https://www.npmjs.com/package/await-timeout"><img src="https://img.shields.io/npm/v/await-timeout.svg" alt="Npm version" /></a>
+  <a href="https://www.npmjs.com/package/await-timeout"><img src="https://img.shields.io/npm/l/await-timeout.svg" alt="License" /></a>
 </div>
 
 ## Contents
