@@ -128,6 +128,7 @@ But no one satisfied all my needs together:
 ## Related resources
 * https://italonascimento.github.io/applying-a-timeout-to-your-promises/
 * https://stackoverflow.com/questions/22707475/how-to-make-a-promise-from-settimeout
+* https://stackoverflow.com/questions/34255351/is-there-a-version-of-settimeout-that-returns-an-es6-promise
 
 ## License
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)
