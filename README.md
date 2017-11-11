@@ -26,16 +26,17 @@ npm install await-timeout --save
 ```
 
 ## Usage
-Example of fetching resource with timeout (using ES7 [async / await]): 
+The example below shows usage of timeout with [ES7 async / await] in `try...finally` block.
+It guarantees that timeout will be cleared in case of fetch success or any error:
 ```js
 import Timeout from 'await-timeout';
 
 async function foo() {
   const timeout = new Timeout();
   try {
-    const mainPromise = fetch('https://example.com');
-    const timerPromise = timeout.set(1000, 'Rejected by timeout');
-    await Promise.race([mainPromise, timerPromise]);
+    const fetchPromise = fetch('https://example.com');
+    const timerPromise = timeout.set(1000, 'Timeout!');
+    const response = await Promise.race([fetchPromise, timerPromise]);
   } catch (e) {
     console.error(e);
   } finally {
@@ -49,7 +50,7 @@ function foo() {
   const timeout = new Timeout();
   return Promise.race([
     fetch('https://example.com'), 
-    timeout.set(1000, 'Rejected by timeout')
+    timeout.set(1000, 'Timeout!')
   ])
   .then(result => {
     timeout.clear();
@@ -71,7 +72,7 @@ const timeout = new Timeout();
 > Note: having separate variable is useful for clearing timeout in `finally` block 
 
 ### .set(ms, [message]) ⇒ `Promise`
-Starts new timer like `setTimeout()` and returns promise. The promise will be resolved after `ms`:
+Starts new timer like `setTimeout()` and returns promise. The promise will be resolved after `ms` milliseconds:
 ```js
 timeout.set(1000)
   .then(() => console.log('1000 ms passed.'));
@@ -89,7 +90,7 @@ timeout.set(1000)
 The second parameter `message` is just convenient way to reject with `new Error(message)`:
 ```js
 timeout.set(1000, 'Timeout');
-// the same as
+// equivalent to
 timeout.set(1000).then(() => {throw new Error('Timeout')});
 ```
 
@@ -133,4 +134,4 @@ MIT @ [Vitaliy Potapov](https://github.com/vitalets)
 
 [Promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [Promise.race()]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race
-[async / await]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+[ES7 async / await]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
