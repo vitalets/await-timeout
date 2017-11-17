@@ -74,6 +74,7 @@ const timeout = new Timeout();
 ### .set(ms, [message]) ⇒ `Promise`
 Starts new timer like `setTimeout()` and returns promise. The promise will be resolved after `ms` milliseconds:
 ```js
+const timeout = new Timeout();
 timeout.set(1000)
   .then(() => console.log('1000 ms passed.'));
 ```
@@ -93,6 +94,17 @@ timeout.set(1000, 'Timeout');
 // equivalent to
 timeout.set(1000).then(() => {throw new Error('Timeout')});
 ```
+
+If you need to just wait some time: 
+```js
+   doAsyncJob()
+     .then(() => new Timeout().set(1000));
+   
+   // or there is static shortcut `Timeout.wait()`
+   doAsyncJob()
+     .then(() => Timeout.wait(1000));
+```
+
 
 ### .clear()
 Clears existing timeout like `clearTimeout()`.
