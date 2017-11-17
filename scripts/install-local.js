@@ -4,6 +4,8 @@
  * See: https://github.com/nicojs/node-install-local/issues/3
  */
 
+/* eslint-disable no-console */
+
 const fs = require('fs');
 const {LocalInstaller, progress} = require('install-local');
 
@@ -16,7 +18,7 @@ installLocal()
     process.exit(1);
   });
 
-async function installLocal() {
+function installLocal() {
   if (!fs.existsSync(TARGET_DIR)) {
     fs.mkdirSync(TARGET_DIR);
   }
@@ -28,5 +30,5 @@ async function installLocal() {
     [`./${TARGET_DIR}`]: ['.']
   });
   progress(localInstaller);
-  await localInstaller.install();
+  return localInstaller.install();
 }

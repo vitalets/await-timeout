@@ -15,7 +15,7 @@
   },
   "main": "index.umd.js",
   "scripts": {
-    "code": "eslint index.js test.js webpack.config.js",
+    "code": "eslint index.js webpack.config.js test scripts",
     "build": "webpack",
     "test": "mocha test/specs -r test/setup",
     "test-umd": "npm run build && LIB_PATH=.. npm t",

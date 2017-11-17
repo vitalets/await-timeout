@@ -1,0 +1,15 @@
+{
+  "env": {
+    "mocha": true
+  },
+
+  "globals": {
+    "Timeout": false,
+    "assert": false,
+    "wait": false
+  },
+
+  "rules": {
+    "max-nested-callbacks": 0
+  }
+}
