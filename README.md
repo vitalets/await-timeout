@@ -95,16 +95,15 @@ timeout.set(1000, 'Timeout');
 timeout.set(1000).then(() => {throw new Error('Timeout')});
 ```
 
-If you need to just wait some time: 
+If you need to just wait some time:
 ```js
    doAsyncJob()
      .then(() => new Timeout().set(1000));
    
-   // or there is static shortcut `Timeout.wait()`
+   // or there is static helper shortcut `Timeout.sleep(ms)`
    doAsyncJob()
-     .then(() => Timeout.wait(1000));
+     .then(() => Timeout.sleep(1000));
 ```
-
 
 ### .clear()
 Clears existing timeout like `clearTimeout()`.
