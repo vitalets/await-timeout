@@ -2,7 +2,7 @@
  * Promise-based replacement for setTimeout / clearTimeout.
  */
 
-export default class Timeout {
+class Timeout {
   constructor() {
     this._id = null;
   }
@@ -18,3 +18,7 @@ export default class Timeout {
     clearTimeout(this._id);
   }
 }
+
+Timeout.wait = ms => new Timeout().set(ms);
+
+export default Timeout;

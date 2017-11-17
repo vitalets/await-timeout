@@ -17,12 +17,10 @@
   "scripts": {
     "code": "eslint index.js test.js webpack.config.js",
     "build": "webpack",
-    "test": "mocha test.js -r babel-register",
-    "test-umd": "npm run build && LIB_PATH=. mocha test.js",
-    "test-installed": "npm run install-local && LIB_PATH=.installed/node_modules/await-timeout npm t",
+    "test": "mocha test/specs -r test/setup",
+    "test-umd": "npm run build && LIB_PATH=.. npm t",
+    "test-installed": "node scripts/install-local && LIB_PATH=../.installed/node_modules/await-timeout npm t",
     "ci": "npm run code && npm test && npm run test-umd",
-    "install-local": "npm run make-installed-dir && pushd .installed && install-local .. && popd",
-    "make-installed-dir": "mkdir -p .installed && echo '{\"name\": \"dummy\"}' > .installed/package.json",
     "prerelease": "npm run code && npm test && npm run test-umd",
     "release": "npm version $VER && npm publish",
     "postrelease": "git push --follow-tags --no-verify",
@@ -30,12 +28,6 @@
     "release-minor": "VER=minor npm run release",
     "precommit": "npm run code && npm test",
     "prepush": "npm run code && npm test && npm run test-umd"
-  },
-  "babel": {
-    "plugins": [
-      "add-module-exports",
-      "transform-es2015-modules-commonjs"
-    ]
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
