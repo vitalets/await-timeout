@@ -78,11 +78,13 @@ const timeout = new Timeout();
 timeout.set(1000)
   .then(() => console.log('1000 ms passed.'));
 ```
+
 If you need to reject after timeout:
 ```js
 timeout.set(1000)
   .then(() => {throw new Error('Timeout')});
 ```
+
 Or reject with custom error:
 ```js
 timeout.set(1000)
@@ -95,14 +97,9 @@ timeout.set(1000, 'Timeout');
 timeout.set(1000).then(() => {throw new Error('Timeout')});
 ```
 
-If you need to just wait some time:
+If you need to just wait some time - use static version of `.set()`:
 ```js
-   doAsyncJob()
-     .then(() => new Timeout().set(1000));
-   
-   // or there is static helper shortcut `Timeout.sleep(ms)`
-   doAsyncJob()
-     .then(() => Timeout.sleep(1000));
+Timeout.set(1000).then(...);
 ```
 
 ### .clear()
@@ -110,10 +107,11 @@ Clears existing timeout like `clearTimeout()`.
 ```js
 const timeout = new Timeout();
 timeout.set(1000)
-  .then(() => console.log('This will never be called!'));
+  .then(() => console.log('This will never be called, because timeout is cleared on the next line'));
 timeout.clear();
 ```
-With [async / await] `.clear()` can be used in `finally` block:
+
+With [ES7 async / await] `.clear()` can be used in `finally` block:
 ```js
 async function foo() {
   const timeout = new Timeout();
