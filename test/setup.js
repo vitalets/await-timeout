@@ -6,5 +6,5 @@ require('babel-register')({
 });
 
 global.assert = require('assert');
-global.Timeout = require(process.env.LIB_PATH || '../index');
+global.Timeout = require(process.env.LIB_PATH || '../src/index');
 global.sleep = ms => new Promise(r => setTimeout(r, ms));

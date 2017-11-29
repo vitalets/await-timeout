@@ -4,9 +4,9 @@ const webpack = require('webpack');
 const packageJson = require('./package');
 
 module.exports = {
-  entry: './index',
+  entry: './src/index',
   output: {
-    path: path.resolve('.'),
+    path: path.resolve('dist'),
     filename: 'index.umd.js',
     libraryTarget: 'umd',
     library: 'AwaitTimeout',
