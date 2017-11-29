@@ -135,9 +135,10 @@ But no one satisfied all my needs together:
 5. Zero dependencies.
 
 ## Related resources
-* https://italonascimento.github.io/applying-a-timeout-to-your-promises/
-* https://stackoverflow.com/questions/22707475/how-to-make-a-promise-from-settimeout
-* https://stackoverflow.com/questions/34255351/is-there-a-version-of-settimeout-that-returns-an-es6-promise
+* [The right way to clear timeout in Promise.race()](https://jslive.com/p/3x2x9h-the-right-way-to-clear-timeout-in-promiserace)
+* [Applying a timeout to your promises](https://italonascimento.github.io/applying-a-timeout-to-your-promises/)
+* [How to make a promise from setTimeout](https://stackoverflow.com/questions/22707475/how-to-make-a-promise-from-settimeout)
+* [Is there a version of setTimeout that returns an ES6 promise?](https://stackoverflow.com/questions/34255351/is-there-a-version-of-settimeout-that-returns-an-es6-promise)
 
 ## License
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)
