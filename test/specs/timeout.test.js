@@ -1,6 +1,11 @@
 describe('Timeout', function () {
   beforeEach(function () {
     this.timeout = new Timeout();
+    this.triggered = false;
+  });
+
+  afterEach(function () {
+    this.timeout.clear();
   });
 
   it('should export class', function () {
@@ -8,24 +13,30 @@ describe('Timeout', function () {
   });
 
   it('should resolve after required ms', function () {
-    const t = Date.now();
-    return this.timeout.set(50)
-      .then(() => {
-        const duration = Date.now() - t;
-        assert.ok(Math.abs(duration - 50) < 10);
-      });
+    this.timeout.set(50).then(() => this.triggered = true);
+    return Promise.all([
+      sleep(45).then(() => assert.equal(this.triggered, false)),
+      sleep(55).then(() => assert.equal(this.triggered, true)),
+    ]);
   });
 
-  it('should reject after delay ms if message defined', function () {
+  it('should reject after delay if message is defined', function () {
     return this.timeout.set(50, 'Timeout')
-      .catch(e => assert.equal(e.message, 'Timeout'));
+      .then(
+        () => assert.fail('should throw'),
+        e => assert.equal(e.message, 'Timeout')
+      );
   });
 
   it('should clear timeout', function () {
-    return Promise.race([
-      this.timeout.set(50).then(() => 'triggered'),
-      wait(20).then(() => this.timeout.clear())
-    ])
-      .then(result => assert.equal(result, undefined));
+    this.timeout.set(50).then(() => this.triggered = true);
+    sleep(20).then(() => this.timeout.clear());
+    return sleep(60).then(() => assert.equal(this.triggered, false));
+  });
+
+  it('should re-set timeout', function () {
+    this.timeout.set(50).then(() => this.triggered = true);
+    this.timeout.set(20).then(() => this.triggered = true);
+    return sleep(30).then(() => assert.equal(this.triggered, true));
   });
 });

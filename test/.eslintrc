@@ -6,7 +6,7 @@
   "globals": {
     "Timeout": false,
     "assert": false,
-    "wait": false
+    "sleep": false
   },
 
   "rules": {

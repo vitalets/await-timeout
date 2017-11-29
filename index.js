@@ -20,6 +20,6 @@ class Timeout {
 }
 
 // Static `.set()` helper
-Timeout.set = ms => new Timeout().set(ms);
+Timeout.set = (ms, msg) => new Timeout().set(ms, msg);
 
 export default Timeout;
