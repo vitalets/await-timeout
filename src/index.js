@@ -14,12 +14,35 @@ class Timeout {
     });
   }
 
+  wrap(promise, ms, msg = '') {
+    const wrappedPromise = promiseFinally(promise, () => this.clear());
+    const timer = this.set(ms, msg);
+    return Promise.race([wrappedPromise, timer]);
+  }
+
   clear() {
     clearTimeout(this._id);
   }
 }
 
-// Static `.set()` helper
-Timeout.set = (ms, msg) => new Timeout().set(ms, msg);
+Timeout.set = function (ms, msg) {
+  return new Timeout().set(ms, msg);
+};
+
+Timeout.wrap = function (promise, ms, msg) {
+  return new Timeout().wrap(promise, ms, msg);
+};
+
+function promiseFinally(promise, fn) {
+  const success = result => {
+    fn();
+    return result;
+  };
+  const error = e => {
+    fn();
+    return Promise.reject(e);
+  };
+  return Promise.resolve(promise).then(success, error);
+}
 
 export default Timeout;

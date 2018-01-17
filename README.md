@@ -15,6 +15,7 @@
 * [API](#api)
   * [new Timeout()](#new-timeout)
   * [.set()](#setms-message--promise)
+  * [.wrap()](#wrap-promise-ms-message--promise)
   * [.clear()](#clear)
 * [Motivation](#motivation)
 * [Related resources](#related-resources)
@@ -26,8 +27,8 @@ npm install await-timeout --save
 ```
 
 ## Usage
-The example below shows usage of timeout with [ES7 async / await] in `try...finally` block.
-It guarantees that timeout will be cleared in case of fetch success or any error:
+The example below shows how to set timeout for fetching `example.com` using [ES7 async / await] syntax. 
+The code is wrapped into `try...finally` block that guarantees the timeout will be properly cleared:
 ```js
 import Timeout from 'await-timeout';
 
@@ -36,7 +37,7 @@ async function foo() {
   try {
     const fetchPromise = fetch('https://example.com');
     const timerPromise = timeout.set(1000, 'Timeout!');
-    const response = await Promise.race([fetchPromise, timerPromise]);
+    return await Promise.race([fetchPromise, timerPromise]);
   } catch (e) {
     console.error(e);
   } finally {
@@ -44,7 +45,7 @@ async function foo() {
   }
 }
 ```
-The same example using `.then`:
+The same example with `.then`:
 ```js
 function foo() {
   const timeout = new Timeout();
@@ -60,6 +61,14 @@ function foo() {
     timeout.clear();
     console.error(e);
   });
+}
+```
+
+The same example using [Timeout.wrap()](#wrap-promise-ms-message--promise) has less code:
+```js
+function foo() {
+  const promise = fetch('https://example.com');
+  return Timeout.wrap(promise, 1000, 'Timeout!').catch(e => console.error(e));
 }
 ```
 
@@ -100,6 +109,13 @@ timeout.set(1000).then(() => {throw new Error('Timeout')});
 If you need to just wait some time - use static version of `.set()`:
 ```js
 Timeout.set(1000).then(...);
+```
+
+### .wrap(promise, ms, [message]) ⇒ `Promise`
+Wraps promise into timeout that automatically cleared if promise gets fulfilled.
+```js
+Timeout.wrap(fetch('https://example.com'), 1000, 'Timeout!')
+  .catch(e => console.error(e));
 ```
 
 ### .clear()
