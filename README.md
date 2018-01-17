@@ -15,7 +15,7 @@
 * [API](#api)
   * [new Timeout()](#new-timeout)
   * [.set()](#setms-message--promise)
-  * [.wrap()](#wrap-promise-ms-message--promise)
+  * [.wrap()](#wrappromise-ms-message--promise)
   * [.clear()](#clear)
 * [Motivation](#motivation)
 * [Related resources](#related-resources)
@@ -64,7 +64,7 @@ function foo() {
 }
 ```
 
-The same example using [Timeout.wrap()](#wrap-promise-ms-message--promise) has less code:
+The same example using [Timeout.wrap()](#wrappromise-ms-message--promise) has less code:
 ```js
 function foo() {
   const promise = fetch('https://example.com');
