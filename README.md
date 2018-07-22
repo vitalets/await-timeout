@@ -27,40 +27,26 @@ npm install await-timeout --save
 ```
 
 ## Usage
-The example below shows how to set timeout for fetching `example.com` using [ES7 async / await] syntax. 
-The code is wrapped into `try...finally` block that guarantees the timeout will be properly cleared:
+Just wait some time:
 ```js
 import Timeout from 'await-timeout';
 
-async function foo() {
-  const timeout = new Timeout();
-  try {
-    const fetchPromise = fetch('https://example.com');
-    const timerPromise = timeout.set(1000, 'Timeout!');
-    return await Promise.race([fetchPromise, timerPromise]);
-  } catch (e) {
-    console.error(e);
-  } finally {
-    timeout.clear();
-  }
-}
+await Timeout.set(1000);
 ```
-The same example with `.then`:
+
+Use `Timeout` instance inside `try...finally` block to make proper cleanup:
 ```js
-function foo() {
-  const timeout = new Timeout();
-  return Promise.race([
-    fetch('https://example.com'), 
-    timeout.set(1000, 'Timeout!')
-  ])
-  .then(result => {
-    timeout.clear();
-    return result;
-  })
-  .catch(e => {
-    timeout.clear();
-    console.error(e);
-  });
+import Timeout from 'await-timeout';
+
+const timer = new Timeout();
+try {
+  await Promise.race([
+    fetch('https://example.com'),
+    timer.set(1000)
+      .then(() => Promise.reject('Timeout'))
+  ]);
+} finally {
+  timer.clear();
 }
 ```
 
@@ -76,34 +62,34 @@ function foo() {
 ### new Timeout()
 Constructs new timeout instance. It does not start timer but creates variable for timer manipulation.
 ```js
-const timeout = new Timeout();
+const timer = new Timeout();
 ```
 > Note: having separate variable is useful for clearing timeout in `finally` block 
 
 ### .set(ms, [message]) ⇒ `Promise`
 Starts new timer like `setTimeout()` and returns promise. The promise will be resolved after `ms` milliseconds:
 ```js
-const timeout = new Timeout();
-timeout.set(1000)
+const timer = new Timeout();
+timer.set(1000)
   .then(() => console.log('1000 ms passed.'));
 ```
 
 If you need to reject after timeout:
 ```js
-timeout.set(1000)
+timer.set(1000)
   .then(() => {throw new Error('Timeout')});
 ```
 
 Or reject with custom error:
 ```js
-timeout.set(1000)
+timer.set(1000)
   .then(() => {throw new MyTimeoutError()});
 ```
 The second parameter `message` is just convenient way to reject with `new Error(message)`:
 ```js
-timeout.set(1000, 'Timeout');
-// equivalent to
-timeout.set(1000).then(() => {throw new Error('Timeout')});
+timer.set(1000, 'Timeout');
+// is equivalent to
+timer.set(1000).then(() => {throw new Error('Timeout')});
 ```
 
 If you need to just wait some time - use static version of `.set()`:
@@ -112,29 +98,31 @@ Timeout.set(1000).then(...);
 ```
 
 ### .wrap(promise, ms, [message]) ⇒ `Promise`
-Wraps promise into timeout that automatically cleared if promise gets fulfilled.
+Wraps existing promise with timeout:
+ * promise automatically rejected after timeout 
+ * timeout automatically cleared if promise fulfills
 ```js
-Timeout.wrap(fetch('https://example.com'), 1000, 'Timeout!')
-  .catch(e => console.error(e));
+const promise = fetch('https://example.com');
+Timeout.wrap(promise, 1000, 'Timeout');
 ```
 
 ### .clear()
 Clears existing timeout like `clearTimeout()`.
 ```js
-const timeout = new Timeout();
-timeout.set(1000)
+const timer = new Timeout();
+timer.set(1000)
   .then(() => console.log('This will never be called, because timeout is cleared on the next line'));
-timeout.clear();
+timer.clear();
 ```
 
 With [ES7 async / await] `.clear()` can be used in `finally` block:
 ```js
 async function foo() {
-  const timeout = new Timeout();
+  const timer = new Timeout();
   try {
     // some async stuff
   } finally {
-    timeout.clear();
+    timer.clear();
   }
 }
 ```
