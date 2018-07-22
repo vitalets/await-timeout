@@ -27,36 +27,28 @@ npm install await-timeout --save
 ```
 
 ## Usage
-Just wait some time:
-```js
-import Timeout from 'await-timeout';
+1. Just wait some time:
+    ```js
+    import Timeout from 'await-timeout';
 
-await Timeout.set(1000);
-```
+    await Timeout.set(1000);
+    ```
 
-Use `Timeout` instance inside `try...finally` block to make proper cleanup:
-```js
-import Timeout from 'await-timeout';
+2. Use `Timeout` instance inside `try...finally` block to make proper cleanup:
+    ```js
+    import Timeout from 'await-timeout';
 
-const timer = new Timeout();
-try {
-  await Promise.race([
-    fetch('https://example.com'),
-    timer.set(1000)
-      .then(() => Promise.reject('Timeout'))
-  ]);
-} finally {
-  timer.clear();
-}
-```
-
-The same example using [Timeout.wrap()](#wrappromise-ms-message--promise) has less code:
-```js
-function foo() {
-  const promise = fetch('https://example.com');
-  return Timeout.wrap(promise, 1000, 'Timeout!').catch(e => console.error(e));
-}
-```
+    const timer = new Timeout();
+    try {
+      await Promise.race([
+        fetch('https://example.com'),
+        timer.set(1000)
+          .then(() => Promise.reject('Timeout'))
+      ]);
+    } finally {
+      timer.clear();
+    }
+    ```
 
 ## API
 ### new Timeout()
