@@ -31,7 +31,11 @@ npm install await-timeout --save
     ```js
     import Timeout from 'await-timeout';
 
+    // wait 1000 ms and resolve
     await Timeout.set(1000);
+    
+    // wait 1000 ms and reject with 'Error'
+    await Timeout.set(1000, 'Error');
     ```
 
 2. Use `Timeout` instance inside `try...finally` block to make proper cleanup:
@@ -92,10 +96,25 @@ Timeout.set(1000).then(...);
 ### .wrap(promise, ms, [message]) ⇒ `Promise`
 Wraps existing promise with timeout:
  * promise automatically rejected after timeout 
- * timeout automatically cleared if promise fulfills
+ * timeout automatically cleared if promise fulfills first
 ```js
 const promise = fetch('https://example.com');
-Timeout.wrap(promise, 1000, 'Timeout');
+
+const timeoutedPromise = Timeout.wrap(promise, 1000, 'Timeout');
+```
+Actually it is a shortcut for:
+```js
+const promise = fetch('https://example.com');
+
+const timer = new Timeout();
+try {
+  const timeoutedPromise = await Promise.race([
+    promise,
+    timer.set(1000, 'Timeout')
+  ]);
+} finally {
+  timer.clear();
+}
 ```
 
 ### .clear()
