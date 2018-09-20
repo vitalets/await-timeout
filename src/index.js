@@ -2,6 +2,8 @@
  * Promise-based replacement for setTimeout / clearTimeout.
  */
 
+import {promiseFinally} from './utils';
+
 class Timeout {
   constructor() {
     this._id = null;
@@ -32,17 +34,5 @@ Timeout.set = function (ms, msg) {
 Timeout.wrap = function (promise, ms, msg) {
   return new Timeout().wrap(promise, ms, msg);
 };
-
-function promiseFinally(promise, fn) {
-  const success = result => {
-    fn();
-    return result;
-  };
-  const error = e => {
-    fn();
-    return Promise.reject(e);
-  };
-  return Promise.resolve(promise).then(success, error);
-}
 
 export default Timeout;
