@@ -11,6 +11,7 @@ class Timeout {
 
   set(ms, msg = '') {
     return new Promise((resolve, reject) => {
+      this.clear();
       const fn = msg ? () => reject(new Error(msg)) : resolve;
       this._id = setTimeout(fn, ms);
     });
@@ -23,7 +24,9 @@ class Timeout {
   }
 
   clear() {
-    clearTimeout(this._id);
+    if (this._id) {
+      clearTimeout(this._id);
+    }
   }
 }
 

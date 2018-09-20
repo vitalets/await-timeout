@@ -1,7 +1,6 @@
 describe('set', function () {
   beforeEach(function () {
     this.timeout = new Timeout();
-    this.triggered = false;
   });
 
   afterEach(function () {
@@ -9,10 +8,11 @@ describe('set', function () {
   });
 
   it('should resolve after required ms', function () {
-    this.timeout.set(50).then(() => this.triggered = true);
+    const spy = sinon.spy();
+    this.timeout.set(50).then(spy);
     return Promise.all([
-      sleep(45).then(() => assert.equal(this.triggered, false)),
-      sleep(55).then(() => assert.equal(this.triggered, true)),
+      sleep(45).then(() => sinon.assert.notCalled(spy)),
+      sleep(55).then(() => sinon.assert.calledOnce(spy)),
     ]);
   });
 
@@ -24,27 +24,29 @@ describe('set', function () {
       );
   });
 
-  it('should re-set timeout', function () {
-    this.timeout.set(50).then(() => this.triggered = true);
-    this.timeout.set(20).then(() => this.triggered = true);
-    return sleep(30).then(() => assert.equal(this.triggered, true));
+  it('should clear existing timer on second set call', function () {
+    const spy1 = sinon.spy();
+    const spy2 = sinon.spy();
+    this.timeout.set(20).then(spy1);
+    setTimeout(() => this.timeout.set(10).then(spy2), 0);
+    return sleep(30).then(() => {
+      sinon.assert.notCalled(spy1);
+      sinon.assert.calledOnce(spy2);
+    });
   });
 });
 
 describe('Timeout.set', function () {
-  beforeEach(function () {
-    this.triggered = false;
-  });
-
   it('should be exported', function () {
     assert.ok(Timeout.set instanceof Function);
   });
 
   it('should resolve after required', function () {
-    Timeout.set(50).then(() => this.triggered = true);
+    const spy = sinon.spy();
+    Timeout.set(50).then(spy);
     return Promise.all([
-      sleep(45).then(() => assert.equal(this.triggered, false)),
-      sleep(55).then(() => assert.equal(this.triggered, true)),
+      sleep(45).then(() => sinon.assert.notCalled(spy)),
+      sleep(55).then(() => sinon.assert.calledOnce(spy)),
     ]);
   });
 

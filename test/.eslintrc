@@ -6,6 +6,7 @@
   "globals": {
     "Timeout": false,
     "assert": false,
+    "sinon": false,
     "sleep": false
   },
 
