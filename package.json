@@ -28,9 +28,15 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run code && npm test",
+      "pre-commit": "lint-staged && npm test",
       "pre-push": "npm run code && npm test && npm run test-umd"
     }
+  },
+  "lint-staged": {
+    "linters": {
+      "**/*.js": "eslint"
+    },
+    "ignore": ["dist"]
   },
   "devDependencies": {
     "eslint": "^5.16.0",
