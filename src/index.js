@@ -9,6 +9,10 @@ class Timeout {
     this._id = null;
   }
 
+  get id() {
+    return this._id;
+  }
+
   set(ms, error = '') {
     return new Promise((resolve, reject) => {
       this.clear();

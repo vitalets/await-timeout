@@ -38,6 +38,12 @@ describe('set', function () {
       sinon.assert.calledOnce(spy2);
     });
   });
+
+  it('should return id property', function () {
+    assert.equal(this.timeout.id, null);
+    this.timeout.set(50);
+    assert.ok(this.timeout.id);
+  });
 });
 
 describe('Timeout.set', function () {
