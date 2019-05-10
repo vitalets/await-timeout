@@ -13,38 +13,34 @@
   "engines": {
     "node": ">=6"
   },
-  "main": "dist/index.umd.js",
+  "main": "dist/bundle.umd.js",
   "scripts": {
-    "code": "eslint src test scripts webpack.config.js",
-    "build": "webpack",
-    "test": "mocha test/specs -r test/setup",
-    "test-umd": "npm run build && LIB_PATH=.. npm t",
+    "code": "eslint src test scripts rollup.config.js",
+    "build": "rollup -c",
+    "test": "npm run build && mocha test/setup test/specs",
     "test-installed": "node scripts/install-local && LIB_PATH=../.installed/node_modules/await-timeout npm t",
-    "ci": "npm run code && npm test && npm run test-umd",
-    "prerelease": "npm run code && npm test && npm run test-umd",
+    "ci": "npm run code && npm test",
+    "prerelease": "npm run code && npm test && npm run test-installed",
     "release": "npm version $VER && npm publish",
     "postrelease": "git push --follow-tags --no-verify",
     "release-patch": "VER=patch npm run release",
-    "release-minor": "VER=minor npm run release",
-    "precommit": "npm run code && npm test",
-    "prepush": "npm run code && npm test && npm run test-umd"
+    "release-minor": "VER=minor npm run release"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run code && npm test",
+      "pre-push": "npm run code && npm test && npm run test-umd"
+    }
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-add-module-exports": "^1.0.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
-    "eslint": "^5.6.0",
-    "husky": "^0.14.3",
-    "install-local": "^0.6.0",
-    "lint-staged": "^7.3.0",
-    "mocha": "^5.2.0",
-    "sinon": "^6.3.4",
-    "webpack": "^4.19.1",
-    "webpack-cli": "^3.1.0"
+    "eslint": "^5.16.0",
+    "husky": "^2.2.0",
+    "install-local": "^1.0.0",
+    "lint-staged": "^8.1.6",
+    "mocha": "^6.1.4",
+    "rollup": "^1.11.3",
+    "rollup-plugin-banner": "^0.2.0",
+    "sinon": "^7.3.2"
   },
   "keywords": [
     "timeout",
