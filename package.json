@@ -36,9 +36,12 @@
     "linters": {
       "**/*.js": "eslint"
     },
-    "ignore": ["dist"]
+    "ignore": [
+      "dist"
+    ]
   },
   "devDependencies": {
+    "assert-rejects": "^1.0.0",
     "eslint": "^5.16.0",
     "husky": "^2.2.0",
     "install-local": "^1.0.0",

@@ -16,12 +16,16 @@ describe('set', function () {
     ]);
   });
 
-  it('should reject after delay if message is defined', function () {
-    return this.timeout.set(50, 'Timeout')
-      .then(
-        () => assert.fail('should throw'),
-        e => assert.equal(e.message, 'Timeout')
-      );
+  it('should reject if message is string ', function () {
+    return assert.rejects(this.timeout.set(50, 'Timeout'), /Timeout/);
+  });
+
+  it('should reject if message is Error', function () {
+    return assert.rejects(this.timeout.set(50, new Error('Timeout')), /Timeout/);
+  });
+
+  it('should reject if message is function returning Error', function () {
+    return assert.rejects(this.timeout.set(50, () => new Error('Timeout')), /Timeout/);
   });
 
   it('should clear existing timer on second set call', function () {
@@ -51,10 +55,6 @@ describe('Timeout.set', function () {
   });
 
   it('should reject after delay if message is defined', function () {
-    return Timeout.set(50, 'Timeout')
-      .then(
-        () => assert.fail('should throw'),
-        e => assert.equal(e.message, 'Timeout')
-      );
+    return assert.rejects(Timeout.set(50, 'Timeout'), /Timeout/);
   });
 });

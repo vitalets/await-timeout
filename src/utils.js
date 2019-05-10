@@ -9,3 +9,13 @@ export function promiseFinally(promise, fn) {
   };
   return Promise.resolve(promise).then(success, error);
 }
+
+/**
+ * Converts any value to Error.
+ * @param {*} value
+ * @returns {Error}
+ */
+export function toError(value) {
+  value = typeof value === 'function' ? value() : value;
+  return typeof value === 'string' ? new Error(value) : value;
+}

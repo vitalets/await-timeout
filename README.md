@@ -90,7 +90,7 @@ timer.set(1000).then(() => {throw new Error('Timeout')});
 
 If you need to just wait some time - use static version of `.set()`:
 ```js
-Timeout.set(1000).then(...);
+await Timeout.set(1000);
 ```
 
 ### .wrap(promise, ms, [message]) ⇒ `Promise`

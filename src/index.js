@@ -2,24 +2,24 @@
  * Promise-based replacement for setTimeout / clearTimeout.
  */
 
-import {promiseFinally} from './utils';
+import {promiseFinally, toError} from './utils';
 
 class Timeout {
   constructor() {
     this._id = null;
   }
 
-  set(ms, msg = '') {
+  set(ms, error = '') {
     return new Promise((resolve, reject) => {
       this.clear();
-      const fn = msg ? () => reject(new Error(msg)) : resolve;
+      const fn = error ? () => reject(toError(error)) : resolve;
       this._id = setTimeout(fn, ms);
     });
   }
 
-  wrap(promise, ms, msg = '') {
+  wrap(promise, ms, error = '') {
     const wrappedPromise = promiseFinally(promise, () => this.clear());
-    const timer = this.set(ms, msg);
+    const timer = this.set(ms, error);
     return Promise.race([wrappedPromise, timer]);
   }
 
@@ -30,12 +30,12 @@ class Timeout {
   }
 }
 
-Timeout.set = function (ms, msg) {
-  return new Timeout().set(ms, msg);
+Timeout.set = function (ms, error) {
+  return new Timeout().set(ms, error);
 };
 
-Timeout.wrap = function (promise, ms, msg) {
-  return new Timeout().wrap(promise, ms, msg);
+Timeout.wrap = function (promise, ms, error) {
+  return new Timeout().wrap(promise, ms, error);
 };
 
 export default Timeout;

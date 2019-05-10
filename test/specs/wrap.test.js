@@ -7,11 +7,7 @@ describe('Timeout.wrap', function () {
   it('should reject after timeout with correct message', function () {
     const promise = sleep(100);
     const wrapped = Timeout.wrap(promise, 50, 'Timeout');
-    return wrapped
-      .then(
-        () => assert.fail('should throw'),
-        e => assert.equal(e.message, 'Timeout')
-      );
+    return assert.rejects(wrapped, /Timeout/);
   });
 
   it('should clear timeout and return result if wrapped promise resolved', function () {
@@ -24,7 +20,6 @@ describe('Timeout.wrap', function () {
   it('should clear timeout and reject if wrapped promise rejected', function () {
     const promise = sleep(50).then(() => Promise.reject('foo'));
     const wrapped = Timeout.wrap(promise, 100, 'Timeout');
-    return wrapped
-      .catch(res => assert.equal(res, 'foo'));
+    return assert.rejects(wrapped, /foo/);
   });
 });
