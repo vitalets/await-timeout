@@ -17,6 +17,8 @@
   * [.set()](#setms-message--promise)
   * [.wrap()](#wrappromise-ms-message--promise)
   * [.clear()](#clear)
+  * [.id](#id--numbertimeout)
+  * [.delay](#delay--number)
 * [Motivation](#motivation)
 * [Related resources](#related-resources)
 * [License](#license)
@@ -62,8 +64,8 @@ const timer = new Timeout();
 ```
 > Note: having separate variable is useful for clearing timeout in `finally` block 
 
-### .set(ms, [message]) ⇒ `Promise`
-Starts new timer like `setTimeout()` and returns promise. The promise will be resolved after `ms` milliseconds:
+### .set(delay, [rejectReason]) ⇒ `Promise`
+Starts new timer like `setTimeout()` and returns promise. The promise will be resolved after `delay` milliseconds:
 ```js
 const timer = new Timeout();
 timer.set(1000)
@@ -93,7 +95,7 @@ If you need to just wait some time - use static version of `.set()`:
 await Timeout.set(1000);
 ```
 
-### .wrap(promise, ms, [message]) ⇒ `Promise`
+### .wrap(promise, delay, [rejectReason]) ⇒ `Promise`
 Wraps existing promise with timeout:
  * promise automatically rejected after timeout 
  * timeout automatically cleared if promise fulfills first
@@ -137,6 +139,18 @@ async function foo() {
   }
 }
 ```
+
+### .id ⇒ `?Number|?Timeout`
+Returns result of `setTimeout` call. That is `Number` timeout id in browser 
+and [Timeout](https://nodejs.org/api/timers.html#timers_class_timeout) instance in Node.js.
+
+### .delay ⇒ `?Number`
+Returns last delay value used. Delay is useful for generating reject reason:
+```js
+const timer = new Timeout();
+timer.set(1000, () => new Error(`Timeout: ${timer.delay}`));
+```
+
 
 ## Motivation
 Before making this library I've researched [many similar packages on Npm](https://www.npmjs.com/search?q=promise%20timeout).

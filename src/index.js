@@ -7,23 +7,29 @@ import {promiseFinally, toError} from './utils';
 class Timeout {
   constructor() {
     this._id = null;
+    this._delay = null;
   }
 
   get id() {
     return this._id;
   }
 
-  set(ms, error = '') {
+  get delay() {
+    return this._delay;
+  }
+
+  set(delay, rejectReason = '') {
     return new Promise((resolve, reject) => {
       this.clear();
-      const fn = error ? () => reject(toError(error)) : resolve;
-      this._id = setTimeout(fn, ms);
+      const fn = rejectReason ? () => reject(toError(rejectReason)) : resolve;
+      this._id = setTimeout(fn, delay);
+      this._delay = delay;
     });
   }
 
-  wrap(promise, ms, error = '') {
+  wrap(promise, delay, rejectReason = '') {
     const wrappedPromise = promiseFinally(promise, () => this.clear());
-    const timer = this.set(ms, error);
+    const timer = this.set(delay, rejectReason);
     return Promise.race([wrappedPromise, timer]);
   }
 
@@ -34,12 +40,12 @@ class Timeout {
   }
 }
 
-Timeout.set = function (ms, error) {
-  return new Timeout().set(ms, error);
+Timeout.set = function (delay, rejectReason) {
+  return new Timeout().set(delay, rejectReason);
 };
 
-Timeout.wrap = function (promise, ms, error) {
-  return new Timeout().wrap(promise, ms, error);
+Timeout.wrap = function (promise, delay, rejectReason) {
+  return new Timeout().wrap(promise, delay, rejectReason);
 };
 
 export default Timeout;

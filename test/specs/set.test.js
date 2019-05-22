@@ -44,6 +44,14 @@ describe('set', function () {
     this.timeout.set(50);
     assert.ok(this.timeout.id);
   });
+
+  it('should return delay property', async function () {
+    assert.equal(this.timeout.delay, null);
+    const promise = this.timeout.set(10);
+    assert.equal(this.timeout.delay, 10);
+    await promise;
+    assert.equal(this.timeout.delay, 10);
+  });
 });
 
 describe('Timeout.set', function () {

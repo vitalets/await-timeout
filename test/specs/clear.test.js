@@ -9,4 +9,10 @@ describe('clear', function () {
     sleep(20).then(() => this.timeout.clear());
     return sleep(60).then(() => sinon.assert.notCalled(spy));
   });
+
+  it('should keep delay property', async function () {
+    this.timeout.set(10);
+    this.timeout.clear();
+    assert.equal(this.timeout.delay, 10);
+  });
 });
