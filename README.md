@@ -36,8 +36,8 @@ npm install await-timeout --save
     // wait 1000 ms and resolve
     await Timeout.set(1000);
     
-    // wait 1000 ms and reject with 'Error'
-    await Timeout.set(1000, 'Error');
+    // wait 1000 ms and reject with 'Timeout!'
+    await Timeout.set(1000, 'Timeout!');
     ```
 
 2. Use `Timeout` instance inside `try...finally` block to make proper cleanup:
@@ -48,21 +48,22 @@ npm install await-timeout --save
     try {
       await Promise.race([
         fetch('https://example.com'),
-        timer.set(1000)
-          .then(() => Promise.reject('Timeout'))
+        timer.set(1000, 'Timeout!')
       ]);
     } finally {
       timer.clear();
     }
     ```
-
+   > Without a timer cleanup you may get unexpected effects in you code - as all promises in `Promise.race` 
+   > are get fulfilled. 
+    
 ## API
 ### new Timeout()
 Constructs new timeout instance. It does not start timer but creates variable for timer manipulation.
 ```js
 const timer = new Timeout();
 ```
-> Note: having separate variable is useful for clearing timeout in `finally` block 
+> Note: having separate `timer` variable is useful for clearing timeout in `finally` block 
 
 ### .set(delay, [rejectReason]) ⇒ `Promise`
 Starts new timer like `setTimeout()` and returns promise. The promise will be resolved after `delay` milliseconds:
@@ -72,22 +73,13 @@ timer.set(1000)
   .then(() => console.log('1000 ms passed.'));
 ```
 
-If you need to reject after timeout:
+If you provide `rejectReason` - a timer promise will be rejected with specified reason:
 ```js
-timer.set(1000)
-  .then(() => {throw new Error('Timeout')});
-```
-
-Or reject with custom error:
-```js
-timer.set(1000)
-  .then(() => {throw new MyTimeoutError()});
-```
-The second parameter `message` is just convenient way to reject with `new Error(message)`:
-```js
-timer.set(1000, 'Timeout');
-// is equivalent to
-timer.set(1000).then(() => {throw new Error('Timeout')});
+// rejects with Error: Timeout after 1000 ms:
+timer.set(1000, 'Timeout after 1000 ms');
+  
+// above is actually shortcut for:
+timer.set(1000).then(() => Promise.reject(new Error('Timeout after 1000 ms')));  
 ```
 
 If you need to just wait some time - use static version of `.set()`:
@@ -98,24 +90,26 @@ await Timeout.set(1000);
 ### .wrap(promise, delay, [rejectReason]) ⇒ `Promise`
 Wraps existing promise with timeout:
  * promise automatically rejected after timeout 
- * timeout automatically cleared if promise fulfills first
+ * timeout automatically cleared if main promise resolves first
 ```js
-const promise = fetch('https://example.com');
-
-const timeoutedPromise = Timeout.wrap(promise, 1000, 'Timeout');
+async function fetchWithTimeout() {
+  const promise = fetch('https://example.com');
+  return Timeout.wrap(promise, 1000, 'Timeout');
+}
 ```
 Actually it is a shortcut for:
 ```js
-const promise = fetch('https://example.com');
-
-const timer = new Timeout();
-try {
-  const timeoutedPromise = await Promise.race([
-    promise,
-    timer.set(1000, 'Timeout')
-  ]);
-} finally {
-  timer.clear();
+async function fetchWithTimeout() {
+    const timer = new Timeout();
+    try {
+      const promise = fetch('https://example.com');
+      return await Promise.race([
+        promise,
+        timer.set(1000, 'Timeout')
+      ]);
+    } finally {
+      timer.clear();
+    }
 }
 ```
 
@@ -151,13 +145,12 @@ const timer = new Timeout();
 timer.set(1000, () => new Error(`Timeout: ${timer.delay}`));
 ```
 
-
 ## Motivation
-Before making this library I've researched [many similar packages on Npm](https://www.npmjs.com/search?q=promise%20timeout).
+Before making this library I've researched [several similar packages on Npm](https://www.npmjs.com/search?q=promise%20timeout).
 But no one satisfied all my needs together:
 
 1. Convenient way to cancel timeout. I typically use it with [Promise.race()] and don't want timer to trigger
-   if main promise is fulfilled first.
+   if main promise is resolved first.
 2. API similar to `setTimeout` / `clearTimeout`. I get used to these functions and would like to have mirror syntax.
 3. Easy rejection of timeout promise. Passing error message should be enough.
 4. No monkey-patching of Promise object.
