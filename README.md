@@ -55,8 +55,16 @@ npm install await-timeout --save
     }
     ```
    > Without a timer cleanup you may get unexpected effects in you code - as all promises in `Promise.race` 
-   > are get fulfilled. 
-    
+   > are get fulfilled.
+
+#### Usage in ES5
+If you are targeting ES5 environment please use transpiled build from `await-timeout/dist/es5`:
+```js
+import Timeout from 'await-timeout/dist/es5';
+
+...
+```
+
 ## API
 ### new Timeout()
 Constructs new timeout instance. It does not start timer but creates variable for timer manipulation.

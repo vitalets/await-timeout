@@ -13,14 +13,16 @@
   "engines": {
     "node": ">=6"
   },
-  "main": "dist/bundle.umd.js",
+  "main": "dist/es6.js",
   "scripts": {
     "code": "eslint src test scripts rollup.config.js",
     "build": "rollup -c",
-    "test": "npm run build && mocha test/setup test/specs",
-    "test-installed": "node scripts/install-local && LIB_PATH=../.installed/node_modules/await-timeout npm test",
+    "test": "npm run build && npm run test-lib",
+    "test-lib": "mocha test/setup test/specs",
+    "test-es5": "LIB_PATH=../dist/es5 npm run test-lib",
+    "test-installed": "node scripts/install-local && LIB_PATH=../.installed/node_modules/await-timeout npm run test-lib",
     "ci": "npm run code && npm test",
-    "prerelease": "npm run code && npm test && npm run test-installed",
+    "prerelease": "npm run code && npm test && npm run test-es5 && npm run test-installed",
     "release": "npm version $VER && npm publish",
     "postrelease": "git push --follow-tags --no-verify",
     "release-patch": "VER=patch npm run release",
@@ -41,6 +43,8 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
     "assert-rejects": "^1.0.0",
     "eslint": "^5.16.0",
     "husky": "^2.2.0",
@@ -48,7 +52,7 @@
     "lint-staged": "^8.1.6",
     "mocha": "^6.1.4",
     "rollup": "^1.11.3",
-    "rollup-plugin-banner": "^0.2.0",
+    "rollup-plugin-babel": "^4.3.3",
     "sinon": "^7.3.2"
   },
   "keywords": [
