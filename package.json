@@ -13,16 +13,13 @@
   "engines": {
     "node": ">=6"
   },
-  "main": "dist/es6.js",
+  "main": "src/index.js",
   "scripts": {
-    "code": "eslint src test scripts rollup.config.js",
-    "build": "rollup -c",
-    "test": "npm run build && npm run test-lib",
-    "test-lib": "mocha test/setup test/specs",
-    "test-es5": "LIB_PATH=../dist/es5 npm run test-lib",
-    "test-installed": "node scripts/install-local && LIB_PATH=../.installed/node_modules/await-timeout npm run test-lib",
-    "ci": "npm run code && npm test",
-    "prerelease": "npm run code && npm test && npm run test-es5 && npm run test-installed",
+    "lint": "eslint src test scripts rollup.config.js",
+    "test": "mocha test/setup test/specs",
+    "test-installed": "node scripts/install-local && LIB_PATH=../.installed/node_modules/await-timeout npm t",
+    "ci": "npm run lint && npm test",
+    "prerelease": "npm run lint && npm test && npm run test-installed",
     "release": "npm version $VER && npm publish",
     "postrelease": "git push --follow-tags --no-verify",
     "release-patch": "VER=patch npm run release",
@@ -31,23 +28,19 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm test",
-      "pre-push": "npm run code && npm test"
+      "pre-push": "npm run lint && npm test"
     }
   },
   "lint-staged": {
     "**/*.js": "eslint"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/preset-env": "^7.7.1",
     "assert-rejects": "^1.0.0",
     "eslint": "^6.6.0",
     "husky": "^3.1.0",
     "install-local": "^1.0.0",
     "lint-staged": "^9.4.3",
     "mocha": "^6.2.2",
-    "rollup": "^1.27.3",
-    "rollup-plugin-babel": "^4.3.3",
     "sinon": "^7.5.0"
   },
   "keywords": [

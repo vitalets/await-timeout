@@ -2,9 +2,17 @@
  * Promise-based replacement for setTimeout / clearTimeout.
  */
 
-import {promiseFinally, toError} from './utils';
+const {promiseFinally, toError} = require('./utils');
 
-class Timeout {
+module.exports = class Timeout {
+  static set(delay, rejectReason) {
+    return new Timeout().set(delay, rejectReason);
+  }
+
+  static wrap(promise, delay, rejectReason) {
+    return new Timeout().wrap(promise, delay, rejectReason);
+  }
+
   constructor() {
     this._id = null;
     this._delay = null;
@@ -30,7 +38,10 @@ class Timeout {
   wrap(promise, delay, rejectReason = '') {
     const wrappedPromise = promiseFinally(promise, () => this.clear());
     const timer = this.set(delay, rejectReason);
-    return Promise.race([wrappedPromise, timer]);
+    return Promise.race([
+      wrappedPromise,
+      timer
+    ]);
   }
 
   clear() {
@@ -38,14 +49,4 @@ class Timeout {
       clearTimeout(this._id);
     }
   }
-}
-
-Timeout.set = function (delay, rejectReason) {
-  return new Timeout().set(delay, rejectReason);
 };
-
-Timeout.wrap = function (promise, delay, rejectReason) {
-  return new Timeout().wrap(promise, delay, rejectReason);
-};
-
-export default Timeout;
