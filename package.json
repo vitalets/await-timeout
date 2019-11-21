@@ -15,7 +15,7 @@
   },
   "main": "src/index.js",
   "scripts": {
-    "lint": "eslint src test scripts rollup.config.js",
+    "lint": "eslint src test scripts",
     "test": "mocha test/setup test/specs",
     "test-installed": "node scripts/install-local && LIB_PATH=../.installed/node_modules/await-timeout npm t",
     "ci": "npm run lint && npm test",
