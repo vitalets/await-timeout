@@ -17,9 +17,10 @@
   "scripts": {
     "lint": "eslint src test scripts",
     "test": "mocha test/setup test/specs",
-    "test-installed": "node scripts/install-local && LIB_PATH=../.installed/node_modules/await-timeout npm t",
+    "test:installed": "node scripts/install-local && LIB_PATH=../.installed/node_modules/await-timeout npm t",
+    "build:es5": "babel src -d es5 --presets=@babel/preset-env",
     "ci": "npm run lint && npm test",
-    "prerelease": "npm run lint && npm test && npm run test-installed",
+    "prerelease": "run-s lint test test:installed build:es5",
     "release": "npm version $VER && npm publish",
     "postrelease": "git push --follow-tags --no-verify",
     "release-patch": "VER=patch npm run release",
@@ -35,12 +36,16 @@
     "**/*.js": "eslint"
   },
   "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
     "assert-rejects": "^1.0.0",
     "eslint": "^6.6.0",
     "husky": "^3.1.0",
     "install-local": "^1.0.0",
     "lint-staged": "^9.4.3",
     "mocha": "^6.2.2",
+    "npm-run-all": "^4.1.5",
     "sinon": "^7.5.0"
   },
   "keywords": [
