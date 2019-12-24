@@ -1,6 +1,6 @@
 {
   "name": "await-timeout",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A Promise-based API for setTimeout / clearTimeout",
   "author": {
     "name": "Vitaliy Potapov",
